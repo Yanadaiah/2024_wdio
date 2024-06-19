@@ -35,8 +35,34 @@ it('Ui Controles',async()=>
 
        //Chai assertions
        expectChai(await dropdown.getValue()).to.equal("stud") //here to.equal are the chai assertion
+})
 
+it('Dynamic dropdowns',async()=>
+    {
+        await browser.url("https://rahulshettyacademy.com/AutomationPractice/")
+        await $("#autocomplete").setValue("ind")
+        await browser.pause("3000")
+        let list = await $$("[class='ui-menu-item'] div")
 
+        for(let i = 0 ; i<await list.length; i++){
+            console.log(await list[i].getText())
+            if(await list[i].getText() === "India"){
+                await list[i].click()
+                await browser.pause("3000")
+            }
+        }
+    }
+)
+
+it('Handle the checkBoxes', async()=>{
+
+    await browser.url("https://rahulshettyacademy.com/AutomationPractice/")
+    let element = await $("//input[@id='checkBoxOption2']")
+    await element.click()
+    console.log(await element.isSelected())
+    console.log(await $("//input[@id='checkBoxOption3']").isSelected())
+
+    await browser.saveScreenshot("Screenshot.png")
 
 })
 
