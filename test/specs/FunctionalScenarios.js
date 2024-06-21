@@ -1,5 +1,8 @@
 
-import { expect as expectChai } from 'chai'
+//import { expect as expectChai } from 'chai'
+
+import { expect as expectChai } from 'chai';
+
 describe("Functional scenarios of the application", async()=>{
 
     it("Scroll into view and mouse over", async()=>{
@@ -27,12 +30,47 @@ describe("Functional scenarios of the application", async()=>{
         expectChai(await browser.getAlertText()).to.be.equal("I am an alert box!") // assertions
         await browser.acceptAlert() //Accept alert
         await browser.pause("3000")
+    })
+    it("Sorting functionality", async()=>{
+
+        //Retrive the list names in array A
+        //Sort the array A into Array B
+        //Compare Array A and Array B
+
+        await browser.url("https://rahulshettyacademy.com/seleniumPractise/#/offers")
+        await $("tr th:nth-child(1)").click() // tr th:nth-child(1) this CSS is for the first element in the list
+
+        const vegiElem = await $$("tr td:nth-child(1)")
+        const vegName = await vegiElem.map(async vegi =>await vegi.getText()) //whenevr we are using function then we have to use async
+        console.log(vegName)
+
+        //with slice() method we are creating one more same array and performing sort operation in case if performed on main array and stored in
+        //one more array then main array also got impacted and will get sorted
+
+        const veg = vegName.slice() //this method will create the one more same array
+        const sortedVeg = veg.sort()
+        console.log(sortedVeg)
+        expectChai(vegName).to.be.equal(sortedVeg)
 
 
+    })
+
+    it("WebTable filter with search", async()=>{
+
+        await browser.url("https://rahulshettyacademy.com/seleniumPractise/#/offers")
+        await $("#search-field").setValue("Tomato")
+
+        const vegList = await $$("tr td:nth-child(1)")
+        await expect(vegList).toBeElementsArrayOfSize({eq:1}) //expect(vegList).toBeElementsArrayOfSize({eq:1}) here will 
+        //compare search resultes will be one 
+
+        console.log(await vegList[0].getText())
+        await expect(await vegList[0]).toHaveTextContaining("Tomato")//here verifying search results text with expacted text
 
 
 
     })
+
 
 
 
